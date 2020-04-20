@@ -32,21 +32,6 @@ const getCleanedString = function(cadena){
      cadena = cadena.replace(/ú/gi,"u");
      //  cadena = cadena.replace(/ñ/gi,"n");
 
-     if(cadena === 'm360_') return cadena === null;
-    switch (cadena){
-        case 'm360_sexo__pareja':
-          return cadena = 'm360_sexo_y_pareja';
-        break;
-        case 'm360_moda__estilo':
-          return cadena = 'm360_moda_y_estilo';
-        break;
-        case 'm360_deco__hogar': 
-            return cadena = 'm360_deco_y_hogar';
-          break;
-      default: 
-      return (cadena);
-    }
-
  }
 
 let dfp_sec       = getCleanedString(dfp_sec_)   || null;
@@ -61,21 +46,7 @@ let arrayTem = [];
     arrayTem.push(dfp_tem2);
     arrayTem.push(dfp_tem3);
 
-let arraySec = [];
-    arraySec.push(prefixTem + "destacados") 		|| null;
-	arraySec.push(prefixTem + "lo_nuevo") 			|| null;
-	arraySec.push(prefixTem + "moda") 				|| null;
-	arraySec.push(prefixTem + "belleza") 			|| null;
-	arraySec.push(prefixTem + "sexo_y_pareja") 		|| null;
-	arraySec.push(prefixTem + "vivir_bien") 		|| null;
-	arraySec.push(prefixTem + "lifestyle") 			|| null;
-	arraySec.push(prefixTem + "cultura_pop") 		|| null;
-	arraySec.push(prefixTem + "videos") 			|| null;
-    arraySec.push(prefixTem + "top") 			    || null;
-    arraySec.push(prefixTem + "comercial") 			|| null;
-
     
-let seccionTop = prefixTem+'top';
 let slot_ads = [];
 
 // console.log("coop_tipo: ",coop_tipo);
@@ -130,10 +101,10 @@ let slot_ads = [];
 
 const cargarPublicidad = function(){
 
- if( !$(".m360_blockSlot")[0] ) return false;
+ if( !$(".coop_blockSlot")[0] ) return false;
      googletag.cmd.push(function() {
 
-         $(".m360_blockSlot:not(.loaded,.only-focus)").each(function(i) {
+         $(".coop_blockSlot:not(.loaded,.only-focus)").each(function(i) {
 
              let $item = $(this);
              
@@ -197,11 +168,11 @@ const cargarPublicidad = function(){
                  console.info("slot renderizados: ",event.slot.getSlotElementId());
              });
      });
-     for(let i =0; i<slot_ads.length; i++){
-        if (slot_ads[i].getSlotElementId() === 'm360_d_120x600_01_home'){
-             arraySlotBlocks = slot_ads[i];
-        }
-     }
+    //  for(let i =0; i<slot_ads.length; i++){
+    //     if (slot_ads[i].getSlotElementId() === 'm360_d_120x600_01_home'){
+    //          arraySlotBlocks = slot_ads[i];
+    //     }
+    //  }
  });
 }
 
@@ -209,11 +180,11 @@ const cargarPublicidad = function(){
 let process_scroll_focus = false;
 const cargarPublicidadFocus = function(){ 
 
- if( !$(".m360_blockSlot")[0] ) return false;
+ if( !$(".coop_blockSlot")[0] ) return false;
  
  googletag.cmd.push(function() {
      
-     $(".m360_blockSlot.only-focus:not(.loaded)").each(function(i) { 
+     $(".coop_blockSlot.only-focus:not(.loaded)").each(function(i) { 
 
          let $item = $(this);
          $item.addClass("loaded");
@@ -267,7 +238,6 @@ const cargarPublicidadFocus = function(){
                     null;
                 }
 
-             
                 const slotDiv = document.createElement('div');
                  slotDiv.id  = id;
 
