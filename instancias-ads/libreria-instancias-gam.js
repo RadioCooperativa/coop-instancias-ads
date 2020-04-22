@@ -192,9 +192,10 @@ const cargarPublicidad = function(){
              let slotDiv = document.createElement('div');
              slotDiv.id  = id;
 
+             let nomBloque = slot.slice(9);
              $(this).html(slotDiv);
 
-             slot_ads[i] = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads());
+             slot_ads[i] = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads().setTargeting('coop_bloque', nomBloque));
 
              console.log("cargarPublicidad coop_dfp_tipo: ",coop_dfp_tipo);
             //  console.log("coop_tema_1: ",[arrayTem.toString()]);
@@ -214,11 +215,6 @@ const cargarPublicidad = function(){
                  console.info("slot renderizados: ",event.slot.getSlotElementId());
              });
      });
-    //  for(let i =0; i<slot_ads.length; i++){
-    //     if (slot_ads[i].getSlotElementId() === 'coop_d_120x600_01_home'){
-    //          arraySlotBlocks = slot_ads[i];
-    //     }
-    //  }
  });
 }
 
@@ -292,10 +288,13 @@ const cargarPublicidadFocus = function(){
 
                 const slotDiv = document.createElement('div');
                  slotDiv.id  = id;
-
+                
+                 let nomBloqueFocus = slot.slice(9);
+                 console.log("cargarPublicidadFocus nomBloque: ",nomBloqueFocus);
+                //  data-slot="/1020719/coop_d_990x90_03"
                  $item.html(slotDiv);
 
-                 slot_ads = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads());
+                 slot_ads = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads().setTargeting('coop_bloque', nomBloqueFocus));
 
                  googletag.pubads().enableSingleRequest();
                  googletag.pubads().setCentering(true);
