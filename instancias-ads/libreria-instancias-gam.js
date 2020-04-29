@@ -58,6 +58,11 @@ const getCleanedString = function(cadena){
 
         console.info("coop_dfp_tipo: "+coop_dfp_tipo);
         console.info("tipoFid: "+tipoFid);
+
+        console.info("nomSeccionTaxo_: "+nomSeccionTaxo_);
+        console.info("nomTemaTaxo_: "+nomTemaTaxo_);
+        console.info("nomSubTemTaxo_: "+nomSubTemTaxo_);
+
         console.info("arraySeccion: ",[arraySeccion.toString()]);
         console.info("arrayTem: ",[arrayTem.toString()]);
         console.info("arrayStem: ",[arrayStem.toString()]);
