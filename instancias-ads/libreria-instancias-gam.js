@@ -38,6 +38,11 @@ const getCleanedString = function(cadena){
 }
 
     let coop_dfp_tipo       = getCleanedString(coop_tipo_);
+    let coop_dfp_region     = getCleanedString(nomRegion);
+
+    let nomSeccionTaxo_     = getCleanedString(nomSeccionTaxo);
+    let nomTemaTaxo_        = getCleanedString(nomTemaTaxo);
+    let nomSubTemTaxo_      = getCleanedString(nomSubTemTaxo);
 
         arraySeccion.push(getCleanedString(coop_dfp_seccion_1));
         arraySeccion.push(getCleanedString(coop_dfp_seccion_2));
@@ -52,6 +57,7 @@ const getCleanedString = function(cadena){
         arrayStem.push(getCleanedString(coop_dfp_subtema_3));
 
         console.info("coop_dfp_tipo: "+coop_dfp_tipo);
+        console.info("tipoFid: "+tipoFid);
         console.info("arraySeccion: ",[arraySeccion.toString()]);
         console.info("arrayTem: ",[arrayTem.toString()]);
         console.info("arrayStem: ",[arrayStem.toString()]);
