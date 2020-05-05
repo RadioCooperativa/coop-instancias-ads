@@ -36,13 +36,13 @@ const getCleanedString = function(cadena){
         }
         return null;
 }
-
-    let coop_dfp_tipo       = getCleanedString(coop_tipo_);
-    let coop_dfp_region     = getCleanedString(nomRegion);
-
-    let nomSeccionTaxo_     = getCleanedString(nomSeccionTaxo);
-    let nomTemaTaxo_        = getCleanedString(nomTemaTaxo);
-    let nomSubTemTaxo_      = getCleanedString(nomSubTemTaxo);
+        let coop_dfp_tipo       = getCleanedString(coop_tipo_);
+        let coop_fid_           = getCleanedString(coop_fid);
+        let coop_dfp_region     = getCleanedString(nomRegion);
+        let coop_seccion_       = getCleanedString(coop_seccion);
+        let nomSeccionTaxo_     = getCleanedString(nomSeccionTaxo);
+        let nomTemaTaxo_        = getCleanedString(nomTemaTaxo);
+        let nomSubTemTaxo_      = getCleanedString(nomSubTemTaxo);
 
         arraySeccion.push(getCleanedString(coop_dfp_seccion_1));
         arraySeccion.push(getCleanedString(coop_dfp_seccion_2));
@@ -56,16 +56,23 @@ const getCleanedString = function(cadena){
         arrayStem.push(getCleanedString(coop_dfp_subtema_2));
         arrayStem.push(getCleanedString(coop_dfp_subtema_3));
 
-        console.info("coop_dfp_tipo: "+coop_dfp_tipo);
-        console.info("tipoFid: "+tipoFid);
 
-        console.info("nomSeccionTaxo_: "+nomSeccionTaxo_);
-        console.info("nomTemaTaxo_: "+nomTemaTaxo_);
-        console.info("nomSubTemTaxo_: "+nomSubTemTaxo_);
+        console.info("************ VALORES SEGMENTACION PERSONALIZADA *************");
 
-        console.info("arraySeccion: ",[arraySeccion.toString()]);
-        console.info("arrayTem: ",[arrayTem.toString()]);
-        console.info("arrayStem: ",[arrayStem.toString()]);
+        console.info("    coop_dfp_tipo: "+coop_dfp_tipo);
+        console.info("    arraySeccion: ",[arraySeccion.toString()]);
+        console.info("    arrayTem: ",[arrayTem.toString()]);
+        console.info("    arrayStem: ",[arrayStem.toString()]);
+        console.info("    coop_seccion portadilla: "+coop_seccion_);
+        console.info("    coop_region: "+coop_dfp_region);
+        console.info("    nomSeccionTaxo_: "+nomSeccionTaxo_);
+        console.info("    nomTemaTaxo_: "+nomTemaTaxo_);
+        console.info("    nomSubTemTaxo_: "+nomSubTemTaxo_);
+
+        console.info("************ /VALORES SEGMENTACION PERSONALIZADA *************");
+
+        
+       
 
 
 (function($){
@@ -114,6 +121,8 @@ const getCleanedString = function(cadena){
 })(jQuery);
 
 const cargarPublicidad = function(){
+
+    console.log("LIBRERIA INSTANCIA GAM cargarPublicidad");
 
  if( !$(".coop_blockSlot")[0] ) return false;
      googletag.cmd.push(function() {
@@ -170,10 +179,22 @@ const cargarPublicidad = function(){
              googletag.pubads().setCentering(true);
              googletag.pubads().collapseEmptyDivs(true,true);
              googletag.pubads().setTargeting('coop_dfp_tipo', coop_dfp_tipo);
-             googletag.pubads().setTargeting('coop_seccion_1', [arraySeccion.toString()]);
-             googletag.pubads().setTargeting('coop_tema_1', [arrayTem.toString()]);
-             googletag.pubads().setTargeting('coop_subtema_1', [arrayStem.toString()]);
-
+             googletag.pubads().setTargeting('coop_region', coop_dfp_region);
+            switch (coop_dfp_tipo){
+                case('portadilla'):
+                    googletag.pubads().setTargeting('coop_seccion_1', coop_seccion_);
+                break;
+                case('portadilla_taxonomica'):
+                    googletag.pubads().setTargeting('coop_seccion_1', nomSeccionTaxo_);
+                    googletag.pubads().setTargeting('coop_tema_1', nomTemaTaxo_);
+                    googletag.pubads().setTargeting('coop_subtema_1', nomSubTemTaxo_);
+                case('articulos'): 
+                    googletag.pubads().setTargeting('coop_seccion_1', [arraySeccion.toString()]);
+                    googletag.pubads().setTargeting('coop_tema_1', [arrayTem.toString()]);
+                    googletag.pubads().setTargeting('coop_subtema_1', [arrayStem.toString()]);
+                break;
+            }
+            
              googletag.enableServices();
              googletag.display(id);
 
@@ -264,15 +285,27 @@ const cargarPublicidadFocus = function(){
                 googletag.pubads().setCentering(true);
                 googletag.pubads().collapseEmptyDivs(true,true);
                 googletag.pubads().setTargeting('coop_dfp_tipo', coop_dfp_tipo);
-                googletag.pubads().setTargeting('coop_seccion_1', [arraySeccion.toString()]);
-                googletag.pubads().setTargeting('coop_tema_1', [arrayTem.toString()]);
-                googletag.pubads().setTargeting('coop_subtema_1', [arrayStem.toString()]);
-
+                googletag.pubads().setTargeting('coop_region', coop_dfp_region);
+                switch (coop_dfp_tipo){
+                    case('portadilla'):
+                        googletag.pubads().setTargeting('coop_seccion_1', coop_seccion_);
+                    break;
+                    case('portadilla_taxonomica'):
+                        googletag.pubads().setTargeting('coop_seccion_1', nomSeccionTaxo_);
+                        googletag.pubads().setTargeting('coop_tema_1', nomTemaTaxo_);
+                        googletag.pubads().setTargeting('coop_subtema_1', nomSubTemTaxo_);
+                    case('articulos'): 
+                        googletag.pubads().setTargeting('coop_seccion_1', [arraySeccion.toString()]);
+                        googletag.pubads().setTargeting('coop_tema_1', [arrayTem.toString()]);
+                        googletag.pubads().setTargeting('coop_subtema_1', [arrayStem.toString()]);
+                    break;
+                }
+                
                 googletag.enableServices();
                 googletag.display(id);
 
                 googletag.pubads().addEventListener('slotRenderEnded', function (event) {
-                    console.info("slot renderizados: ",event.slot.getSlotElementId())
+                    console.info("slot renderizados: ",event.slot.getSlotElementId());
                 });
 
              process_scroll_focus = false;
