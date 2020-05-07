@@ -5,7 +5,9 @@ let bannerRob     = [300, 250];
 let bannerRobImpar  = [[300, 250],[300,400],[300,450],[300,600]];
 let bannerMenuCoop = [250,90];
 
-let MbannerTop     = [[300, 50], [300, 60], [300, 70], [300, 80], [300, 90], [300, 100], [300, 150], [300, 400], [300, 450], [300, 600], [320, 50], [320, 60], [320, 70], [320, 80], [320, 90], [320, 100],[320, 150], [320, 480]];
+let MbannerTop     = [[300, 50], [300, 60], [300, 70], [300, 80], [300, 90], [300, 100], [300, 140], [300, 150], [300, 180], [320, 50], [320, 60], [320, 70], [320, 80], [320, 90], [320, 100], [320, 150], [320, 180]];
+let MbannerTop2     = [[300, 50], [300, 60], [300, 70], [300, 80], [300, 90], [300, 100], [300, 140], [300, 150], [300, 250], [300, 300], [300, 350], [300, 400], [300, 450], [300, 600], [320, 50], [320, 60], [320, 70], [320, 80], [320, 90], [320, 100], [320, 150], [320, 250]];
+
 let MbannerRob     = [[300, 40], [300, 50], [300, 60], [300, 70], [300, 80], [300, 90], [300, 100], [300, 150], [300, 250], [300, 400], [300, 450], [300, 600], [320, 40], [320, 50], [320, 60], [320, 70], [320, 80], [320, 90], [320, 100], [320, 150], [320, 250]];
 
 let slotDimensions;
@@ -68,6 +70,9 @@ const getCleanedString = function(cadena){
         console.info("    nomSeccionTaxo_: "+nomSeccionTaxo_);
         console.info("    nomTemaTaxo_: "+nomTemaTaxo_);
         console.info("    nomSubTemTaxo_: "+nomSubTemTaxo_);
+        console.info("    progressStatus: "+progressStatus);
+        
+
 
         console.info("************ /VALORES SEGMENTACION PERSONALIZADA *************");
 
@@ -163,6 +168,10 @@ const cargarPublicidad = function(){
                     break;
                 case(8):
                     slotDimensions = bannerMenuCoop;
+                    break;
+                case(9):
+                    slotDimensions = MbannerTop2;
+                    break;
                 default:
                     null;
             }
@@ -180,6 +189,8 @@ const cargarPublicidad = function(){
              googletag.pubads().collapseEmptyDivs(true,true);
              googletag.pubads().setTargeting('coop_dfp_tipo', coop_dfp_tipo);
              googletag.pubads().setTargeting('coop_region', coop_dfp_region);
+             googletag.pubads().setTargeting('progressStatus', progressStatus);
+
             switch (coop_dfp_tipo){
                 case('portadilla'):
                     googletag.pubads().setTargeting('coop_seccion_1', coop_seccion_);
@@ -269,6 +280,12 @@ const cargarPublicidadFocus = function(){
                 case(7):
                     slotDimensions = MbannerRob;
                     break;
+                case(8):
+                    slotDimensions = bannerMenuCoop;
+                    break;
+                case(9):
+                    slotDimensions = MbannerTop2;
+                    break;
                 default:
                     null;
                 }
@@ -286,6 +303,8 @@ const cargarPublicidadFocus = function(){
                 googletag.pubads().collapseEmptyDivs(true,true);
                 googletag.pubads().setTargeting('coop_dfp_tipo', coop_dfp_tipo);
                 googletag.pubads().setTargeting('coop_region', coop_dfp_region);
+                googletag.pubads().setTargeting('progressStatus', progressStatus);
+
                 switch (coop_dfp_tipo){
                     case('portadilla'):
                         googletag.pubads().setTargeting('coop_seccion_1', coop_seccion_);
