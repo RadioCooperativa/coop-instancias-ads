@@ -1,5 +1,6 @@
 let ittFooter     = [1,1];
-let bannerTop     = [[728, 90], [990, 50], [728, 50], [728, 60], [990, 90], [990, 60], [728, 40], [990, 40], [1100, 90], [1300, 90]];
+let bannerTop     = [[728, 90], [990, 50], [728, 50], [728, 60], [990, 90], [990, 100], [990, 200], [990, 60], [728, 40], [990, 40], [1100, 90], [1300, 90]];
+let bannerTopArticles     = [[650, 90], [728, 60], [650, 40], [650, 60], [728, 90]];
 let bannerTower   = [[120, 600],[160, 600]];
 let bannerRob     = [300, 250];
 let bannerRobImpar  = [[300, 250],[300,400],[300,450],[300,600]];
@@ -15,29 +16,32 @@ let slot_ads = [];
 let arraySlotBlocks;
 
 const getCleanedString = function(cadena){
+    // Definimos los caracteres que queremos eliminar
+    let specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+ 
+    if(cadena){
+        for (let i = 0; i < specialChars.length; i++) {
+            cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+        }    
+    
+ 
+    // Lo queremos devolver limpio en minusculas
+    cadena = cadena.toLowerCase();
+ 
+    // Quitamos espacios y los sustituimos por _
+    cadena = cadena.replace(/ /g,"_");
+ 
+    // Quitamos acentos y "ñ".
+    cadena = cadena.replace(/á/gi,"a");
+    cadena = cadena.replace(/é/gi,"e");
+    cadena = cadena.replace(/í/gi,"i");
+    cadena = cadena.replace(/ó/gi,"o");
+    cadena = cadena.replace(/ú/gi,"u");
+    }
+   //  cadena = cadena.replace(/ñ/gi,"n");
+    return cadena;
+ }
 
-    let specialChars = ["!@#$^&%*()+=-[]\/{}|:<>?,."];
-        specialChars.push('&amp;');
-
-        if(cadena){
-           for (let i = 0; i < specialChars.length; i++) {
-               cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-           }   
-       
-           cadena = cadena.toLowerCase();
-       
-           cadena = cadena.replace(/ /g,"_");
-       
-           cadena = cadena.replace(/á/gi,"a");
-           cadena = cadena.replace(/é/gi,"e");
-           cadena = cadena.replace(/í/gi,"i");
-           cadena = cadena.replace(/ó/gi,"o");
-           cadena = cadena.replace(/ú/gi,"u");
-           //  cadena = cadena.replace(/ñ/gi,"n");
-           return cadena;
-        }
-        return null;
-}
         let coop_dfp_tipo       = getCleanedString(coop_tipo_);
         let coop_fid_           = getCleanedString(coop_fid);
         let coop_dfp_region     = getCleanedString(nomRegion);
@@ -71,7 +75,8 @@ const getCleanedString = function(cadena){
         console.info("    nomTemaTaxo_: "+nomTemaTaxo_);
         console.info("    nomSubTemTaxo_: "+nomSubTemTaxo_);
         console.info("    progressStatus: "+progressStatus);
-        
+        console.info("    coop_dfp_ts: "+coop_dfp_ts);
+        console.info("    coop_fid_: "+coop_fid_);
 
 
         console.info("************ /VALORES SEGMENTACION PERSONALIZADA *************");
@@ -104,6 +109,8 @@ const getCleanedString = function(cadena){
     //  }
 
      var bounds = this.offset();
+
+     console.log("isOnScreen bounds: ",bounds);
      bounds.right = bounds.left + width;
      bounds.bottom = bounds.top + height;
 
@@ -127,9 +134,9 @@ const getCleanedString = function(cadena){
 
 const cargarPublicidad = function(){
 
-    console.log("LIBRERIA INSTANCIA GAM cargarPublicidad");
+    console.log("LIBRERIA INSTANCIA GAM cargarPublicidad refresh: ");
 
- if( !$(".coop_blockSlot")[0] ) return false;
+    if( !$(".coop_blockSlot")[0] ) return false;
      googletag.cmd.push(function() {
 
          $(".coop_blockSlot:not(.loaded,.only-focus)").each(function(i) {
@@ -172,6 +179,9 @@ const cargarPublicidad = function(){
                 case(9):
                     slotDimensions = MbannerTop2;
                     break;
+                case(10):
+                    slotDimensions = bannerTopArticles;
+                    break;
                 default:
                     null;
             }
@@ -184,12 +194,19 @@ const cargarPublicidad = function(){
 
              slot_ads[i] = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads().setTargeting('coop_bloque', nomBloque));
 
+            // let slotVariable = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads().setTargeting('coop_bloque', nomBloque));
+
+            // console.log("cargarPublicidad slot_ads: ",slotVariable);
+
+
              googletag.pubads().enableSingleRequest();
              googletag.pubads().setCentering(true);
              googletag.pubads().collapseEmptyDivs(true,true);
-             googletag.pubads().setTargeting('coop_dfp_tipo', coop_dfp_tipo);
+             googletag.pubads().setTargeting('coop_tipo', coop_dfp_tipo);
              googletag.pubads().setTargeting('coop_region', coop_dfp_region);
              googletag.pubads().setTargeting('progressStatus', progressStatus);
+             googletag.pubads().setTargeting('coop_ts', coop_dfp_ts);
+
 
             switch (coop_dfp_tipo){
                 case('portadilla'):
@@ -199,11 +216,14 @@ const cargarPublicidad = function(){
                     googletag.pubads().setTargeting('coop_seccion_1', nomSeccionTaxo_);
                     googletag.pubads().setTargeting('coop_tema_1', nomTemaTaxo_);
                     googletag.pubads().setTargeting('coop_subtema_1', nomSubTemTaxo_);
-                case('articulos'): 
+                case('articulo'): 
+                console.log("case de articulos");
                     googletag.pubads().setTargeting('coop_seccion_1', [arraySeccion.toString()]);
                     googletag.pubads().setTargeting('coop_tema_1', [arrayTem.toString()]);
                     googletag.pubads().setTargeting('coop_subtema_1', [arrayStem.toString()]);
                 break;
+                default:
+                    null;
             }
             
              googletag.enableServices();
@@ -218,21 +238,45 @@ const cargarPublicidad = function(){
                 arraySlotBlocks = slot_ads[i];
             }
         }
- });
+        });
+
+    
+ 
 }
 
+
+// function refresca_banners(){
+//     // googletag.destroySlots([itt_tag]);
+//     googletag.pubads().refresh();
+  
+//     return false;
+//   }
+
+  
+
+  const refresca_banners = function(){
+      console.log("Llamo a refresca_banners");
+      googletag.pubads().refresh();
+
+  }
 
 let process_scroll_focus = false;
 const cargarPublicidadFocus = function(){ 
     console.log("LIBRERIA INSTANCIA GAM cargarPublicidadFocus");
 
  if( !$(".coop_blockSlot")[0] ) return false;
- 
+//  setTimeout(function() {
+//     console.log("llamando a refresca_banners");
+    
+//     refresca_banners();
+// }, 5000);
  googletag.cmd.push(function() {
      
      $(".coop_blockSlot.only-focus:not(.loaded)").each(function(i) { 
+            //  console.log("cargarPublicidadFocus1 adunit: ",id);
 
          let $item = $(this);
+         console.log("item: ",$item);
          $item.addClass("loaded");
 
          if($item.isOnScreen(0.5,0.5) === true && process_scroll_focus === false ){
@@ -243,6 +287,11 @@ const cargarPublicidadFocus = function(){
              let id         = $item.data("adunit");
              let slot       = $item.data("slot");
              let dimensions = $item.data("dimensions");
+
+             console.log("cargarPublicidadFocus adunit: ",id);
+             console.log("cargarPublicidadFocus slot: ",slot);
+             console.log("cargarPublicidadFocus dimensions: ",dimensions);
+
 
              if(dimensions === 4){
                 $item.css({                    
@@ -286,6 +335,9 @@ const cargarPublicidadFocus = function(){
                 case(9):
                     slotDimensions = MbannerTop2;
                     break;
+                case(10):
+                    slotDimensions = bannerTopArticles;
+                    break;
                 default:
                     null;
                 }
@@ -298,12 +350,12 @@ const cargarPublicidadFocus = function(){
 
                 slot_ads = googletag.defineSlot(slot, slotDimensions, id).addService(googletag.pubads().setTargeting('coop_bloque', nomBloqueFocus));
 
-                googletag.pubads().enableSingleRequest();
-                googletag.pubads().setCentering(true);
-                googletag.pubads().collapseEmptyDivs(true,true);
-                googletag.pubads().setTargeting('coop_dfp_tipo', coop_dfp_tipo);
-                googletag.pubads().setTargeting('coop_region', coop_dfp_region);
-                googletag.pubads().setTargeting('progressStatus', progressStatus);
+                // googletag.pubads().enableSingleRequest();
+                // googletag.pubads().setCentering(true);
+                // googletag.pubads().collapseEmptyDivs(true,true);
+                // googletag.pubads().setTargeting('coop_tipo', coop_dfp_tipo);
+                // googletag.pubads().setTargeting('coop_region', coop_dfp_region);
+                // googletag.pubads().setTargeting('progressStatus', progressStatus);
 
                 switch (coop_dfp_tipo){
                     case('portadilla'):
@@ -313,15 +365,18 @@ const cargarPublicidadFocus = function(){
                         googletag.pubads().setTargeting('coop_seccion_1', nomSeccionTaxo_);
                         googletag.pubads().setTargeting('coop_tema_1', nomTemaTaxo_);
                         googletag.pubads().setTargeting('coop_subtema_1', nomSubTemTaxo_);
-                    case('articulos'): 
+                    case('articulo'): 
+                    console.log("case de articulos");
                         googletag.pubads().setTargeting('coop_seccion_1', [arraySeccion.toString()]);
                         googletag.pubads().setTargeting('coop_tema_1', [arrayTem.toString()]);
                         googletag.pubads().setTargeting('coop_subtema_1', [arrayStem.toString()]);
                     break;
+                    default:
+                        null;
                 }
                 
-                googletag.enableServices();
-                googletag.display(id);
+                 googletag.enableServices();
+                 googletag.display(id);
 
                 googletag.pubads().addEventListener('slotRenderEnded', function (event) {
                     console.info("slot renderizados: ",event.slot.getSlotElementId());
@@ -344,3 +399,4 @@ $(window).on('scroll load', function() {
 $(document).ready(function(){
     cargarPublicidad();
 });
+
