@@ -69,7 +69,26 @@ const getCleanedString = function(cadena){
         console.info("    coop_fid_: "+coop_fid_);
         console.info("************ /VALORES SEGMENTACION PERSONALIZADA *************");
 
-        
+        callUrlPreroll();
+
+        async function callUrlPreroll(){
+
+            if(coop_fid_ === 'video'){
+                if(plataforma === 1){
+                    await go('https://pubads.g.doubleclick.net/gampad/ads?iu=/1020719/coop_m_preroll&description_url=https%3A%2F%2Fwww.cooperativa.cl&tfcd=0&npa=0&sz=640x360&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=',arraySeccion, arrayTem, arrayStem)
+                }else{
+                    await go('https://pubads.g.doubleclick.net/gampad/ads?iu=/1020719/coop_d_preroll&description_url=https%3A%2F%2Fwww.cooperativa.cl&tfcd=0&npa=0&sz=640x360&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=',arraySeccion, arrayTem, arrayStem)
+                }
+                
+            }else if(coop_fid_ === 'audio'){
+                if(plataforma === 1){
+                    await go('https://pubads.g.doubleclick.net/gampad/ads?iu=/1020719/coop_m_preroll_audio&description_url=https%3A%2F%2Fwww.cooperativa.cl&tfcd=0&npa=0&sz=640x360&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=',arraySeccion, arrayTem, arrayStem)
+                }else{
+                    await go('https://pubads.g.doubleclick.net/gampad/ads?iu=/1020719/coop_d_preroll_audio&description_url=https%3A%2F%2Fwww.cooperativa.cl&tfcd=0&npa=0&sz=640x360&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=',arraySeccion, arrayTem, arrayStem)
+                }
+            }
+        }
+
 (function($){
 
  $.fn.isOnScreen = function(x, y){
@@ -170,7 +189,7 @@ const cargarPublicidad = function(){
              googletag.pubads().collapseEmptyDivs(true,true);
              googletag.pubads().setTargeting('coop_tipo', coop_dfp_tipo);
              googletag.pubads().setTargeting('coop_region', coop_dfp_region);
-            //  googletag.pubads().setTargeting('progressStatus', progressStatus);
+             googletag.pubads().setTargeting('progressStatus', progressStatus);
              googletag.pubads().setTargeting('coop_ts', coop_dfp_ts);
 
 
@@ -204,16 +223,13 @@ const cargarPublicidad = function(){
             }
         }
         });
-
-    
- 
 }
 
-  const refresca_banners = function(){
-      console.log("Llamo a refresca_banners");
-      googletag.pubads().refresh();
+//   const refresca_banners = function(){
+//       console.log("Llamo a refresca_banners");
+//       googletag.pubads().refresh();
 
-  }
+//   }
 
 let process_scroll_focus = false;
 const cargarPublicidadFocus = function(){ 
@@ -292,7 +308,7 @@ const cargarPublicidadFocus = function(){
                         googletag.pubads().collapseEmptyDivs(true,true);
                         googletag.pubads().setTargeting('coop_tipo', coop_dfp_tipo);
                         googletag.pubads().setTargeting('coop_region', coop_dfp_region);
-                        // googletag.pubads().setTargeting('progressStatus', progressStatus);
+                        googletag.pubads().setTargeting('progressStatus', progressStatus);
                         googletag.pubads().setTargeting('coop_ts', coop_dfp_ts);
 
                         switch (coop_dfp_tipo){
@@ -311,14 +327,11 @@ const cargarPublicidadFocus = function(){
                             default:
                                 null;
                         }
-                        
                         googletag.enableServices();
                         googletag.display(id);
-
                         googletag.pubads().addEventListener('slotRenderEnded', function (event) {
                             console.info("slot renderizados: ",event.slot.getSlotElementId());
                         });
-
                     process_scroll_focus = false;
             }
             else{
@@ -335,4 +348,3 @@ $(window).on('scroll load', function() {
 $(document).ready(function(){
     cargarPublicidad();
 });
-
