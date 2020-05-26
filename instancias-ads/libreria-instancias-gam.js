@@ -12,7 +12,8 @@ let MbannerTop2     = [[300, 50], [300, 60], [300, 70], [300, 80], [300, 90], [3
 let MbannerRob     = [[300, 40], [300, 50], [300, 60], [300, 70], [300, 80], [300, 90], [300, 100], [300, 150], [300, 250], [300, 400], [300, 450], [300, 600], [320, 40], [320, 50], [320, 60], [320, 70], [320, 80], [320, 90], [320, 100], [320, 150], [320, 250]];
 
 let slotDimensions;
-let slot_ads = [];
+let slot_ads    = [];
+let bloqueItt   = [];
 let arraySlotBlocks;
 
 const getCleanedString = function(cadena){
@@ -217,19 +218,22 @@ const cargarPublicidad = function(){
                  console.info("slot renderizados: ",event.slot.getSlotElementId());
              });
      });
-        for(let i =0; i<slot_ads.length; i++){
-            if (slot_ads[i].getSlotElementId() === 'coop_d_120x600_01_1'){
-                arraySlotBlocks = slot_ads[i];
+            for(let i =0; i<slot_ads.length; i++){
+                if (slot_ads[i].getSlotElementId() === 'coop_d_120x600_01_1'){
+                    arraySlotBlocks = slot_ads[i];
+                }else if(slot_ads[i].getSlotElementId() === 'coop_d_1x1_1'){
+                    bloqueItt = slot_ads[i];
+                }
             }
-        }
         });
 }
 
-//   const refresca_banners = function(){
-//       console.log("Llamo a refresca_banners");
-//       googletag.pubads().refresh();
-
-//   }
+const refresca_banners = function(){
+    if(bloqueItt){
+        googletag.destroySlots([bloqueItt]);
+    }
+    googletag.pubads().refresh();
+}
 
 let process_scroll_focus = false;
 const cargarPublicidadFocus = function(){ 
